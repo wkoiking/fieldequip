@@ -4,7 +4,7 @@ synopsis:            NS internal tool
 homepage:            
 license:             BSD3
 license-file:        LICENSE
-author:              Nao Fujinaga
+author:              wkoiking
 maintainer:          wanagida@gmail.com
 category:            Utility
 build-type:          Simple
