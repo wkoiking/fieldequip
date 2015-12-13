@@ -1,0 +1,43 @@
+name:                fieldequip
+version:             0.1
+synopsis:            NS internal tool
+homepage:            
+license:             BSD3
+license-file:        LICENSE
+author:              Nao Fujinaga
+maintainer:          wanagida@gmail.com
+category:            Utility
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable fieldequip-exe
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base, fieldequip, diagrams-core, diagrams-lib, diagrams-svg, SVGFonts, transformers, transformers-compat
+  default-language:    Haskell2010
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Backend, Frontend, Core.CommonData, Core.DrawInterval, Core.Interval, Core.Replace, Core.Topology
+  build-depends:       base , lens , diagrams-svg, diagrams-core, diagrams-lib, 
+                       SVGFonts, parsec, fgl, my-parser, transformers
+  
+  -- Modules not exported by this package.
+  -- Other-modules:       
+  
+  -- Extra tools (e.g. alex, hsc2hs, ...) needed to build the source.
+  -- Build-tools:         
+
+test-suite fieldequip-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , fieldequip
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+-- source-repository head
+--   type:     git
+--   location: https://github.com/githubuser/my-project
