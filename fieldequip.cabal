@@ -40,4 +40,4 @@ test-suite fieldequip-test
 
 -- source-repository head
 --   type:     git
---   location: https://github.com/githubuser/my-project
+--   location: https://github.com/wkoiking/fieldequip
