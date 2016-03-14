@@ -88,7 +88,7 @@ type Error a = Either String a
 
 (upLineYPos, downLineYPos) = (1, 3) -- 後で書き換える必要あり
 
-platformYCenterPos = 0 -- 後で書き換える必要あり
+platformYCenterPos = 1 -- 後で書き換える必要あり
 
 -- カーブやトンネルに対するアンテナの特性
 unitLength = 250
@@ -132,7 +132,7 @@ drawImplementation (Implementation g pds ss (rs1:rs2:_) (gs1:gs2:_) (ts:_)) = do
         dobjs   = mconcat $ map drawObject $ objs
         dobjKm = mconcat $ map drawObjectKm $ objs
         hLine = p2 (startKm, 0) ~~ p2 (endKm, 0)
-    return $ vcat' (with & sep .~ 10) [dgs1, drs1, hLine, dobjKm, hLine, centerY (dg <> pdds <> dobjs) <> dss, drs2, dgs2, dts] # lw medium
+    return $ vcat' (with & sep .~ 10) [dgs1, drs1, hLine, dobjKm, hLine, centerY (dg <> pdds <> dobjs) <> dss, drs2, dgs2, dts] # lwG 0.05
 
 countObject :: Implementation -> [(String, String, Int)]
 countObject (Implementation g pds ss (rs1:rs2:_) (gs1:gs2:_) (ts:_)) = sumObj $ concatMap toCountFormat objs
@@ -433,34 +433,34 @@ drawAntennas = mconcat . map drawAntenna
 drawAntenna :: AntennaData -> Diagram SVG R2
 drawAntenna (AntennaData n pos WRS) = translateX pos antenna
  where antenna = img === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg red "WRS"
 drawAntenna (AntennaData n pos WRSSingleShield) = translateX pos antenna
  where antenna = centerY (img === strutY 5 === img) === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg red "WRS"
 drawAntenna (AntennaData n pos SRS) = translateX pos antenna
  where antenna = img === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg blue "SRS"
 drawAntenna (AntennaData n pos DoubleSRS) = translateX pos antenna
  where antenna = centerX (img ||| img) === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg blue "SRS"
 drawAntenna (AntennaData n pos SRSBranch) = translateX pos antenna
  where antenna = img === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg blue "SRS"
 drawAntenna (AntennaData n pos DoubleSRSBranch) = translateX pos antenna
  where antenna = centerX (img ||| img) === km
-       km = rotate (1/4 @@ turn) (textDef (showKm pos))
+       km = rotate (1/4 @@ turn) (textDef (showKm pos) # lwG 0.05)
        img = antennaImg blue "SRS"
 
 antennaImg col str
- = scale 20 antenna === fc col (textDef str) === strutY 5 
+ = scale 20 antenna === fc col (textDef str) # lwG 0.05 === strutY 5 
  where antenna = beside unitY (style (square 1)) (style $ tr === vrule 0.5)
        tr = scaleY (- 1.1) $ eqTriangle 0.8
-       style = lc col . lw medium
+       style = lc col . lwG 0.05
 
 -- balise
 drawObject :: ObjectData -> Diagram SVG R2
@@ -473,13 +473,13 @@ drawObject (ObjectData n1 (Balise bt dir) startSt startLine pos@(x,y)) = transla
            | dir == Up   = baliseImg bt === txt -- === km
            | dir == Down = (scale (-1) $ baliseImg bt) `under` txt -- `under` km
 
-baliseImg P0  = scale 20 $ baliseSquare # fc blue # lw medium
-baliseImg P1  = scale 20 $ baliseTriangle # lc blue # lw medium
-baliseImg P2  = scale 20 $ baliseTriangle # lc blue # lw medium
-baliseImg CP  = scale 20 $ baliseTriangle # lc purple # lw medium
-baliseImg L   = scale 20 $ baliseTriangle # lc green # lw medium
-baliseImg R   = scale 20 $ baliseTriangle # lc red # lw medium
-baliseImg ORP = scale 20 $ baliseTriangle # lc aqua # lw medium
+baliseImg P0  = scale 20 $ baliseSquare # fc blue # lwG 0.05
+baliseImg P1  = scale 20 $ baliseTriangle # lc blue # lwG 0.05
+baliseImg P2  = scale 20 $ baliseTriangle # lc blue # lwG 0.05
+baliseImg CP  = scale 20 $ baliseTriangle # lc purple # lwG 0.05
+baliseImg L   = scale 20 $ baliseTriangle # lc green # lwG 0.05
+baliseImg R   = scale 20 $ baliseTriangle # lc red # lwG 0.05
+baliseImg ORP = scale 20 $ baliseTriangle # lc aqua # lwG 0.05
 
 baliseSquare = centerXY $ scaleY 0.6 $ square 1
 -- baliseSquare = align unitY $ scaleY 0.6 $ square 1

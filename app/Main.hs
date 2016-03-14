@@ -43,7 +43,7 @@ import Control.Monad.Trans.Except
 (s, e) = (-537.292, 15147.952)
 
 main = do
-    str <- readFile "./input/SAO6_Data.md"
+    str <- readFile "./test/input/SAO6_Data.md"
     case readSpecification str of
         Left err1 -> putStrLn ("Parse Error: " ++ err1)
         Right spec -> case specToImpl spec of
@@ -59,7 +59,7 @@ main = do
                             srsSt  = decideSRSStation ss
                             as     = putAntennas s e rs ts srsSt
                         mapM_ (putStrLn . show) $ countAntenna as
-                        renderSVG "./output/sample.svg" (Width 5000) $ diagram === drawAntennas as
+                        renderSVG "./test/output/sample.svg" (Width 5000) $ diagram === drawAntennas as
 
 specToImpl :: Specification -> Error Implementation
 specToImpl spec@(Specification g p s r gr t) = do
@@ -148,7 +148,7 @@ putBalise sds pds (path, orig@(Stop startStName), dest@(Stop endStName)) = do
        (endSt, endLine) = spanQualified endStName
 
 -- maybeToMaybeT :: Maybe a -> MaybeT (S.State s) a
--- maybeToMaybeT = MaybeT . return
+    -- maybeToMaybeT = MaybeT . return
 
 maybeToExceptT :: String -> Maybe a -> ExceptT String (S.State s) a
 maybeToExceptT e m = ExceptT $ return $ case m of
